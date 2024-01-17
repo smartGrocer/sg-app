@@ -1,35 +1,45 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useEffect, useState } from "react";
+import "./App.css";
+import axios from "axios";
+import { SERVER_URL } from "./common/environment";
 
 function App() {
-  const [count, setCount] = useState(0)
+	const [allProducts, setAllProducts] = useState([]);
 
-  return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+	const fetchAllProducts = async () => {
+		if (!SERVER_URL) {
+			return [];
+		}
+		const url = `${SERVER_URL}/api`;
+		console.log("SERVER_URL", url);
+		const response = await axios.get(url);
+		console.log("response", response.data.data);
+		setAllProducts(response.data.data);
+	};
+
+	useEffect(() => {
+		fetchAllProducts();
+	}, []);
+
+	return (
+		<div className="App">
+			{/* show all products as tiles */}
+			<div className="grid grid-cols-3 gap-4">
+				{allProducts.map((product: any) => (
+					<div className="bg-white shadow-md rounded-lg overflow-hidden">
+						<div className="p-4">
+							<h3 className="font-bold text-xl mb-2">
+								{product.name}
+							</h3>
+							<p className="text-gray-700 text-base">
+								{product.description}
+							</p>
+						</div>
+					</div>
+				))}
+			</div>
+		</div>
+	);
 }
 
-export default App
+export default App;
