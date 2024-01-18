@@ -1,45 +1,19 @@
-import { useEffect, useState } from "react";
+import { IonApp, IonRouterOutlet } from "@ionic/react";
+import { IonReactRouter } from "@ionic/react-router";
+import { Route } from "react-router-dom";
+import Home from "./components/Home/Home";
 import "./App.css";
-import axios from "axios";
-import { SERVER_URL } from "./common/environment";
 
-function App() {
-	const [allProducts, setAllProducts] = useState([]);
-
-	const fetchAllProducts = async () => {
-		if (!SERVER_URL) {
-			return [];
-		}
-		const url = `${SERVER_URL}/api`;
-		console.log("SERVER_URL", url);
-		const response = await axios.get(url);
-		console.log("response", response.data.data);
-		setAllProducts(response.data.data);
-	};
-
-	useEffect(() => {
-		fetchAllProducts();
-	}, []);
-
+const App = (): JSX.Element => {
 	return (
-		<div className="App">
-			{/* show all products as tiles */}
-			<div className="grid grid-cols-3 gap-4">
-				{allProducts.map((product: any) => (
-					<div className="bg-white shadow-md rounded-lg overflow-hidden">
-						<div className="p-4">
-							<h3 className="font-bold text-xl mb-2">
-								{product.name}
-							</h3>
-							<p className="text-gray-700 text-base">
-								{product.description}
-							</p>
-						</div>
-					</div>
-				))}
-			</div>
-		</div>
+		<IonApp>
+			<IonReactRouter>
+				<IonRouterOutlet>
+					<Route path="/" component={Home} />
+				</IonRouterOutlet>
+			</IonReactRouter>
+		</IonApp>
 	);
-}
+};
 
 export default App;
