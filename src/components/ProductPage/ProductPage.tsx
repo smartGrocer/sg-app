@@ -2,20 +2,44 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import Header from "../Header/Header";
-import { Product } from "../../common/types/products";
+import { IResSource, Product } from "../../common/types/products";
 import { SERVER_URL } from "../../common/environment";
+import {
+	getDeviceCache,
+	setDeviceCache,
+} from "../../common/helpers/deviceCache";
 
-const ProductPage = (): JSX.Element => {
+interface ProductPageProps {
+	resSource: IResSource;
+	setResSource: (resSource: IResSource) => void;
+}
+
+const ProductPage = (props: ProductPageProps): JSX.Element => {
+	const { resSource, setResSource } = props;
 	const { id } = useParams<{ id: string }>();
 	const [product, setProduct] = useState<Product | null>(null);
 
 	useEffect(() => {
 		const fetchProduct = async (): Promise<void> => {
+			const cachedProduct = (await getDeviceCache(id)) as Product | null;
+
+			if (cachedProduct) {
+				setProduct(cachedProduct);
+				setResSource("local");
+				return;
+			}
+
 			if (SERVER_URL) {
 				const url = `${SERVER_URL}/api/product/${id}`;
 				const response = await axios.get(url);
 				const { data } = response.data;
 				setProduct(data);
+				setResSource(response.data.from);
+				await setDeviceCache({
+					key: id,
+					value: JSON.stringify(data),
+					ttl: 60 * 60 * 24 * 1,
+				});
 			}
 		};
 		fetchProduct();
@@ -24,6 +48,7 @@ const ProductPage = (): JSX.Element => {
 		<div className="flex flex-col jusitfy-center">
 			<Header
 				title={`Product ${id.charAt(0).toUpperCase()}${id.slice(1)}`}
+				resSource={resSource}
 			/>
 			<img
 				className="mx-auto h-1/2 shadow-lg shadow-slate-400 rounded-3xl my-5 min-h-96"

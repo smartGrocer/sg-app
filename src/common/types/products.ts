@@ -14,3 +14,5 @@ export interface Product {
 }
 
 export type ProductList = Product[];
+
+export type IResSource = "local" | "cache" | "db" | null;
