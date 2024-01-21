@@ -1,12 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import {
-	IonContent,
-	IonHeader,
-	IonItem,
-	IonTitle,
-	IonToolbar,
-} from "@ionic/react";
+import { IonContent, IonHeader, IonTitle, IonToolbar } from "@ionic/react";
 import { SERVER_URL } from "../../common/environment";
 
 import { ProductList } from "../../common/types/products";
@@ -34,11 +28,20 @@ const Home = (): JSX.Element => {
 					<IonTitle>Home</IonTitle>
 				</IonToolbar>
 			</IonHeader>
-			<IonItem>
+			<div
+				style={{
+					display: "flex",
+					justifyContent: "space-between",
+					alignItems: "space-between",
+					flexWrap: "wrap",
+
+					width: "100%",
+				}}
+			>
 				{allProducts?.map((product) => (
 					<ProductTile key={product.id} product={product} />
 				))}
-			</IonItem>
+			</div>
 		</IonContent>
 	);
 };

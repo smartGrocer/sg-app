@@ -4,7 +4,10 @@ import {
 	IonCardHeader,
 	IonCardSubtitle,
 	IonCardTitle,
+	IonIcon,
+	IonItem,
 } from "@ionic/react";
+import { bagAdd, eye } from "ionicons/icons";
 import { Product } from "../../common/types/products";
 
 interface ProductTileProps {
@@ -13,26 +16,27 @@ interface ProductTileProps {
 
 const ProductTile = (props: ProductTileProps): JSX.Element => {
 	const { product } = props;
+
 	return (
 		<IonCard
 			style={{
-				width: "100%",
-				maxWidth: "150px",
-				// margin: "auto",
-				// space between cards
-				margin: "10px",
+				maxWidth: "120px",
+				marginRight: "5px",
+				marginLeft: "5px",
+				marginBottom: "20px",
 				display: "flex",
 				flexDirection: "column",
 				alignItems: "center",
 				height: "100%",
 				maxHeight: "300px",
 				borderRadius: "20px",
+				boxShadow: "0px 0px 10px 0px rgba(0,0,0,0.45)",
 			}}
 		>
 			<img
 				alt={`Product: ${product.product_name} Brand: ${product.brand_name}`}
 				src={product.linkToImage}
-				height={150}
+				height={120}
 			/>
 
 			<IonCardHeader>
@@ -72,7 +76,21 @@ const ProductTile = (props: ProductTileProps): JSX.Element => {
 				</IonCardTitle>
 			</IonCardHeader>
 			{/* add to cart button */}
-			<IonButton>Add to Cart</IonButton>
+			<IonItem
+				style={{
+					// space between buttons
+					display: "flex",
+					flexDirection: "column",
+					justifyContent: "space-between",
+				}}
+			>
+				<IonButton href={`/product/${product.id}`}>
+					<IonIcon icon={eye} size="small" />
+				</IonButton>
+				<IonButton>
+					<IonIcon icon={bagAdd} size="small" />
+				</IonButton>
+			</IonItem>
 		</IonCard>
 	);
 };
