@@ -3,3 +3,4 @@
 vite.config.ts
 jest.config.ts
 /dist
+tailwind.config.js

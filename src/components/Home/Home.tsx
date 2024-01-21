@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { IonContent, IonHeader, IonTitle, IonToolbar } from "@ionic/react";
+import { IonContent } from "@ionic/react";
 import { SERVER_URL } from "../../common/environment";
 
 import { ProductList } from "../../common/types/products";
 import ProductTile from "../ProductTile.tsx/ProductTile";
+import Header from "../Header/Header";
 
 const Home = (): JSX.Element => {
 	const [allProducts, setAllProducts] = useState<ProductList>();
@@ -15,7 +16,6 @@ const Home = (): JSX.Element => {
 				const url = `${SERVER_URL}/api`;
 				const response = await axios.get(url);
 				const { data } = response.data;
-				console.log("response", data);
 				setAllProducts(data);
 			}
 		};
@@ -23,21 +23,8 @@ const Home = (): JSX.Element => {
 	}, []);
 	return (
 		<IonContent>
-			<IonHeader>
-				<IonToolbar>
-					<IonTitle>Home</IonTitle>
-				</IonToolbar>
-			</IonHeader>
-			<div
-				style={{
-					display: "flex",
-					justifyContent: "space-between",
-					alignItems: "space-between",
-					flexWrap: "wrap",
-
-					width: "100%",
-				}}
-			>
+			<Header title="Home" />
+			<div className="flex flex-wrap justify-evenly w-full items-start ">
 				{allProducts?.map((product) => (
 					<ProductTile key={product.id} product={product} />
 				))}
