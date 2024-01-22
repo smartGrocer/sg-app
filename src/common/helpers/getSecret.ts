@@ -1,5 +1,5 @@
 type SecretType =
-	| "SERVER_URL"
+	| "VITE_SERVER_URL"
 	| "ALL_PRODUCTS_CACHE_TIMEOUT"
 	| "PRODUCT_CACHE_TIMEOUT";
 
@@ -9,7 +9,7 @@ const getSecret = (secretType: SecretType): string => {
 
 	// if the secret is not found, throw an error
 	if (!secret) {
-		throw new Error(`Upstash secret not found: ${secretType}`);
+		throw new Error(`Secret not found: ${secretType}`);
 	}
 
 	// return the secret
