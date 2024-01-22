@@ -2,12 +2,13 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import Header from "../Header/Header";
-import { IResSource, Product } from "../../common/types/products";
-import { SERVER_URL } from "../../common/environment";
+import { IResSource, ProductStorePrice } from "../../common/types/products";
+import { PRODUCT_CACHE_TIMEOUT, SERVER_URL } from "../../common/environment";
 import {
 	getDeviceCache,
 	setDeviceCache,
 } from "../../common/helpers/deviceCache";
+import PriceTable from "../PriceTable/PriceTable";
 
 interface ProductPageProps {
 	resSource: IResSource;
@@ -17,11 +18,15 @@ interface ProductPageProps {
 const ProductPage = (props: ProductPageProps): JSX.Element => {
 	const { resSource, setResSource } = props;
 	const { id } = useParams<{ id: string }>();
-	const [product, setProduct] = useState<Product | null>(null);
+	const [product, setProduct] = useState<ProductStorePrice>(
+		{} as ProductStorePrice
+	);
 
 	useEffect(() => {
 		const fetchProduct = async (): Promise<void> => {
-			const cachedProduct = (await getDeviceCache(id)) as Product | null;
+			const cachedProduct = (await getDeviceCache(
+				id
+			)) as ProductStorePrice | null;
 
 			if (cachedProduct) {
 				setProduct(cachedProduct);
@@ -38,12 +43,12 @@ const ProductPage = (props: ProductPageProps): JSX.Element => {
 				await setDeviceCache({
 					key: id,
 					value: JSON.stringify(data),
-					ttl: 60 * 60 * 24 * 1,
+					ttl: Number(PRODUCT_CACHE_TIMEOUT),
 				});
 			}
 		};
 		fetchProduct();
-	}, [id]);
+	}, []);
 	return (
 		<div className="flex flex-col jusitfy-center">
 			<Header
@@ -69,6 +74,12 @@ const ProductPage = (props: ProductPageProps): JSX.Element => {
 			<div className="flex flex-col items-center">
 				<p>{product?.description}</p>
 			</div>
+
+			{product?.id && (
+				<div className="flex flex-col items-center">
+					<PriceTable product={product} />
+				</div>
+			)}
 		</div>
 	);
 };

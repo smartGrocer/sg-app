@@ -1,4 +1,4 @@
-import { IonHeader, IonTitle, IonToolbar } from "@ionic/react";
+import { IonBackButton, IonHeader, IonTitle, IonToolbar } from "@ionic/react";
 import { IResSource } from "../../common/types/products";
 import SourceIcon from "./SourceIcon";
 
@@ -13,6 +13,12 @@ const Header = (props: HeaderProps): JSX.Element => {
 		<IonHeader>
 			<IonToolbar>
 				<div className="flex flex-row items-center mr-2">
+					{window.location.pathname !== "/" && (
+						<div className="flex flex-row justify-start">
+							<IonBackButton defaultHref="/" />
+						</div>
+					)}
+
 					<IonTitle className="text-3xl">{title}</IonTitle>
 					<div className="flex flex-row justify-end">
 						<span className="flex align-middle">
