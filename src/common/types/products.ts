@@ -1,4 +1,4 @@
-interface Product {
+export interface Product {
 	id: number;
 	createdAt: string;
 	updatedAt: string;
@@ -15,7 +15,7 @@ interface Product {
 
 export type ProductList = Product[];
 
-interface ProductPrice {
+export interface ProductPrice {
 	id: number;
 	createdAt: string;
 	updatedAt: string;

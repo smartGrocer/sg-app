@@ -9,8 +9,14 @@ interface PriceRowProps {
 const PriceRow = (props: PriceRowProps): JSX.Element => {
 	const { PriceRowData, storeName, locationName } = props;
 
-	const { price, promo, promoPrice, promoExpiry, linkToProduct, updatedAt } =
-		PriceRowData;
+	const {
+		price,
+		promo,
+		promo_price: promoPrice,
+		promo_expiry: promoExpiry,
+		linkToProduct,
+		updatedAt,
+	} = PriceRowData;
 
 	// show a row with the above information, with each of them being a column
 
