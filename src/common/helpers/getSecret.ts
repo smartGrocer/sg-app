@@ -1,11 +1,12 @@
 type SecretType =
 	| "VITE_SERVER_URL"
-	| "ALL_PRODUCTS_CACHE_TIMEOUT"
-	| "PRODUCT_CACHE_TIMEOUT";
+	| "VITE_ALL_PRODUCTS_CACHE_TIMEOUT"
+	| "VITE_PRODUCT_CACHE_TIMEOUT";
 
 const getSecret = (secretType: SecretType): string => {
 	// get the secret from the environment variables
-	const secret = process.env[secretType];
+	// import.meta.env.
+	const secret = import.meta.env[secretType];
 
 	// if the secret is not found, throw an error
 	if (!secret) {
