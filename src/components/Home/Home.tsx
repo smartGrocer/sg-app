@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { IonContent } from "@ionic/react";
+import { IonContent, IonPage } from "@ionic/react";
 import { useLocation } from "react-router-dom";
 import {
 	ALL_PRODUCTS_CACHE_TIMEOUT,
@@ -9,11 +9,12 @@ import {
 
 import { IResSource, ProductList } from "../../common/types/products";
 import ProductTile from "../ProductTile.tsx/ProductTile";
-import Header from "../Header/Header";
+import Header from "../HeaderFooter/Header";
 import {
 	getDeviceCache,
 	setDeviceCache,
 } from "../../common/helpers/deviceCache";
+import Footer from "../HeaderFooter/Footer";
 
 interface HomeProps {
 	resSource: IResSource;
@@ -59,14 +60,17 @@ const Home = (props: HomeProps): JSX.Element => {
 		fetchAllProducts();
 	}, [setResSource]);
 	return (
-		<IonContent>
+		<IonPage>
 			<Header title="Home" resSource={resSource} />
-			<div className="flex flex-wrap justify-evenly w-full items-start ">
-				{allProducts?.map((product) => (
-					<ProductTile key={product.id} product={product} />
-				))}
-			</div>
-		</IonContent>
+			<IonContent>
+				<div className="flex flex-wrap justify-evenly w-full items-start ">
+					{allProducts?.map((product) => (
+						<ProductTile key={product.id} product={product} />
+					))}
+				</div>
+			</IonContent>
+			<Footer />
+		</IonPage>
 	);
 };
 
